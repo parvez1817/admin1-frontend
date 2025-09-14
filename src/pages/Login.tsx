@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { User } from "lucide-react";
+import { User, Loader } from "lucide-react";
 import { API_URL } from "@/lib/utils";
 
 const Login = () => {
   const [adminId, setAdminId] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -16,6 +17,7 @@ const Login = () => {
       setError("Admin ID is required");
       return;
     }
+    setIsLoading(true);
     try {
       const response = await fetch(`${API_URL}/api/login`, {
         method: 'POST',
@@ -32,6 +34,8 @@ const Login = () => {
       }
     } catch (err) {
       setError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -77,10 +81,12 @@ const Login = () => {
         </div>
         <Button
           type="submit"
+          disabled={isLoading}
           className="w-full py-3 rounded-md bg-yellow-400 hover:bg-yellow-500 text-black text-lg font-bold shadow-md transition-colors mt-2"
           style={{ fontFamily: 'Poppins, sans-serif', boxShadow: '0 4px 24px 0 rgba(0,0,0,0.08)' }}
         >
-          Login
+          {isLoading && <Loader className="animate-spin" />}
+          {isLoading ? "Logging in..." : "Login"}
         </Button>
       </form>
       <div className="mt-10 text-center text-white text-lg font-semibold drop-shadow-md" style={{ fontFamily: 'Poppins, sans-serif' }}>
