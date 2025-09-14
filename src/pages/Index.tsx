@@ -60,8 +60,8 @@ const AdminDashboard = () => {
       })
       .catch((err) => console.error("Error fetching pending data:", err));
 
-    // Fetch accepted ID cards
-    fetch(`${API_URL}/api/accepted-idcards`)
+    // Fetch accepted ID cards history
+    fetch(`${API_URL}/api/acchistoryid`)
       .then((res) => res.json())
       .then((data) => {
         const formatted = data.map((item: any, index: number) => ({
@@ -362,7 +362,7 @@ const AdminDashboard = () => {
                               }
 
                               // Refresh accepted cards
-                              const acceptedResponse = await fetch(`${API_URL}/api/accepted-idcards`);
+                              const acceptedResponse = await fetch(`${API_URL}/api/acchistoryid`);
                               if (acceptedResponse.ok) {
                                 const acceptedData = await acceptedResponse.json();
                                 const formattedAccepted = acceptedData.map((item: any, index: number) => ({
